@@ -1,11 +1,14 @@
 from operations import add, subtract, multiply, divide
 from utils.input_handler import get_choice, get_number
 from history.manager import add_entry, show_history, clear_history
+from parser.tokenizer import tokenize
+from parser.validator import validate_tokens
+from parser.evaluator import evaluate
 
 def handle_result(num1: float, num2: float, symbol: str, result: float):
-    entry: str = f"{num1} {symbol} {num2} = {result}"
+    entry: str = f"{num1:g} {symbol} {num2:g} = {result:g}"
     add_entry(entry)
-    print('Result:', result)
+    print(f'Result: {result:g}')
     print()
 
 def main():
@@ -17,18 +20,19 @@ def main():
         print('2. Subtract')
         print('3. Multiply')
         print('4. Divide')
-        print('5. Exit')
+        print('5. Evaluate expression')
         print('6. Show History')
         print('7. Clear History')
+        print('8. Exit')
 
         choice: int = get_choice('Enter your choice: ')
 
-        if choice not in range(1, 8):
+        if choice not in range(1, 9):
             print('Please choose valid options!')
             print()
             continue
 
-        if choice == 5:
+        if choice == 8:
             print('Goodbye!')
             break
 
@@ -42,10 +46,32 @@ def main():
             print()
             continue
 
+        if choice == 5:
+            expression: str = input('Enter expression: ')
+            
+            try:
+                tokens = tokenize(expression)
+                validate_tokens(tokens)
+                result: float = evaluate(tokens)
+
+                entry = f'{expression} = {result:g}'
+                add_entry(entry)
+
+                print(f'Result: {result:g}')
+                print()
+
+                current_result = result
+
+            except ValueError as e:
+                print(f'Error: {e}')
+                print()
+
+            continue
+
         if current_result is None:
             num1: float = get_number('Enter your first number: ')
         else:
-            print(f"Current result: {current_result}")
+            print(f"Current result: {current_result:g}")
             while True:
                 use_prev: str = input('Continue with this result? (y/n): ').lower()
 
