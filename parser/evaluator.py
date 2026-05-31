@@ -1,4 +1,4 @@
-Token = str | float
+from parser.token_types import Token
 
 def evaluate(tokens: list[Token]) -> float:
     tokens = tokens[:]
@@ -38,3 +38,31 @@ def evaluate(tokens: list[Token]) -> float:
         j += 2
 
     return result
+
+def evaluate_with_parentheses(tokens: list[Token]) -> float:
+    tokens = tokens[:]
+
+    while '(' in tokens:
+        # find last '('
+        start: int | None = None
+        for i in range(len(tokens)):
+            if tokens[i] == '(':
+                start = i
+
+        # find the corresponding ')'
+        end: int | None = None
+        for j in range(start, len(tokens)):
+            if tokens[j] == ')':
+                end = j
+                break
+
+        # extract the sub-expression
+        sub_expr: list[Token] = tokens[start+1:end]
+
+        # evaluate the sub-expression
+        result: float = evaluate(sub_expr)
+
+        # replace (...) with result
+        tokens[start:end+1] = [result]
+
+    return evaluate(tokens)
