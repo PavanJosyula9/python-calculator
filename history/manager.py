@@ -18,4 +18,3 @@ def show_history() -> None:
 def clear_history() -> None:
     history.clear()
     save_history(history)
-    print('History cleared')
