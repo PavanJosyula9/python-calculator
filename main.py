@@ -42,7 +42,20 @@ def main():
             continue
 
         if choice == 7:
-            clear_history()
+            while True:
+                confirmation: str = input('Are you sure you want to clear history? (y/n): ').strip().lower()
+
+                if confirmation == 'y':
+                    clear_history()
+                    print('History cleared successfully.')
+                    break
+                
+                if confirmation == 'n':
+                    print('History deletion cancelled.')
+                    break
+                
+                print("Please enter either 'y' or 'n'.")
+            
             print()
             continue
 
