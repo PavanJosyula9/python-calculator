@@ -1,4 +1,4 @@
-Token = str | float
+from parser.token_types import Token
 
 def flush_number(tokens: list[Token], current_number: str) -> None:
     if current_number:
@@ -19,7 +19,7 @@ def tokenize(expression: str) -> list[Token]:
                 raise ValueError('Invalid number format')
             dot_used = True
             current_number += char
-        elif char in '+-*/':
+        elif char in '+-*/()':
             if current_number:
                 flush_number(tokens, current_number)
                 current_number = ''

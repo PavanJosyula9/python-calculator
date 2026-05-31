@@ -2,8 +2,8 @@ from operations import add, subtract, multiply, divide
 from utils.input_handler import get_choice, get_number
 from history.manager import add_entry, show_history, clear_history
 from parser.tokenizer import tokenize
-from parser.validator import validate_tokens
-from parser.evaluator import evaluate
+from parser.validator import validate_expression
+from parser.evaluator import evaluate_with_parentheses
 
 def handle_result(num1: float, num2: float, symbol: str, result: float):
     entry: str = f"{num1:g} {symbol} {num2:g} = {result:g}"
@@ -51,8 +51,8 @@ def main():
             
             try:
                 tokens = tokenize(expression)
-                validate_tokens(tokens)
-                result: float = evaluate(tokens)
+                validate_expression(tokens)
+                result: float = evaluate_with_parentheses(tokens)
 
                 entry = f'{expression} = {result:g}'
                 add_entry(entry)
