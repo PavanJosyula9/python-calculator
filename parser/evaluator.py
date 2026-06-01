@@ -59,6 +59,10 @@ def evaluate_with_parentheses(tokens: list[Token]) -> float:
         # extract the sub-expression
         sub_expr: list[Token] = tokens[start+1:end]
 
+        # validate the sub-expression
+        if not sub_expr:
+            raise ValueError('Empty parentheses')
+        
         # evaluate the sub-expression
         result: float = evaluate(sub_expr)
 
